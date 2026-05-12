@@ -61,7 +61,7 @@ public class gradeswithclass {
 
         scanner.nextLine();
 
-        Management newUser = new Management(name, age, grades, studentId);
+        Students newUser = new Students(name, age, grades, studentId);
         students.add(newUser);
         System.out.println("Account created successfully!");
     }

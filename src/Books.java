@@ -3,11 +3,13 @@ class Books{
     private String author;
     private int bookID;
     private int stocks;
+    private int stockLimit;
     Books(String name, String author,int bookID,int stocks){
         this.name=name;
         this.author=author;
         this.bookID=bookID;
         this.stocks=stocks;
+        this.stockLimit=stocks;
     }
     public String getName(){
         return name;
@@ -21,6 +23,9 @@ class Books{
     public int getStocks(){
         return stocks;
     }
+    public int getLimit(){
+        return stockLimit;
+    }
     public void setStocks(int stocks){
         this.stocks=stocks;
     }
@@ -29,10 +34,10 @@ class Books{
     @Override
     public String toString() {
         return "\n-----------------------------" +
-                "\nBookName:       " + this.getName() +
+                "\nBookName:      " +this.getName() +
                 "\nAuthor:        " + this.getAuthor() +
-                "\nBook ID: " + this.getBookID() +
-                "\nStocks:      " + this.getStocks() +
+                "\nBook ID:       " + this.getBookID() +
+                "\nStocks:        " +   this.getStocks() +
                 "\n-----------------------------";
     }
 }
