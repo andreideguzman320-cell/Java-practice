@@ -39,7 +39,7 @@ public class librarymanagement {
 
                     case 7 -> {
                         System.out.println("Thank you for using our app");
-                        return;
+                        System.exit(0);
                     }
 
                     default -> System.out.println("Invalid Input");
@@ -55,162 +55,178 @@ public class librarymanagement {
 
     }//void main
     static void addBook(){
-        String name;
-        String author;
-        int bookID;
-        int stock;
+        try{
+            String name;
+            String author;
+            int bookID;
+            int stock;
 
-        System.out.print("Enter book ID: ");
-        bookID=scanner.nextInt();
-        scanner.nextLine();
-        for(Books book:books){
-            if(book.getBookID()==(bookID)){
-                System.out.println("This book already exist!");
-                return;
+            System.out.print("Enter book ID: ");
+            bookID = scanner.nextInt();
+            scanner.nextLine();
+            for (Books book : books) {
+                if (book.getBookID() == (bookID)) {
+                    System.out.println("This book already exist!");
+                    return;
+                }
             }
+
+            System.out.print("Enter Book Name: ");
+            name = scanner.nextLine();
+
+            System.out.print("Enter book author: ");
+            author = scanner.nextLine();
+
+
+            System.out.print("Enter book stock: ");
+            stock = scanner.nextInt();
+
+            Books book = new Books(name, author, bookID, stock);
+
+            books.add(book);
+        }catch(Exception e){
+            System.out.println("Invalid Input");
         }
-
-        System.out.print("Enter Book Name: ");
-        name=scanner.nextLine();
-
-        System.out.print("Enter book author: ");
-        author=scanner.nextLine();
-
-
-
-        System.out.print("Enter book stock: ");
-        stock=scanner.nextInt();
-
-        Books book=new Books(name,author,bookID,stock);
-
-        books.add(book);
     }
     static void viewBooks(){
         int i=1;
         if(books.isEmpty()){
             System.out.println("No books available");
-            return;
+            System.exit(0);
         }
         for(Books book:books){
             System.out.println(i++ +". "+ book);
         }
     }
     static void borrowBooks(){
-        int choice;
-        int amount;
-        if(books.isEmpty()){
-            System.out.println("No books available");
-            return;
+        try{
+            int choice;
+            int amount;
+            if (books.isEmpty()) {
+                System.out.println("No books available");
+                return;
+            }
+
+            viewBooks();
+
+            System.out.print("Enter Book: ");
+            choice = scanner.nextInt();
+
+            int index = choice - 1;
+
+            if (index < 0 || index >= books.size()) {
+                System.out.println("invalid input");
+                return;
+            }
+
+            System.out.print("Enter the amount you want to borrow: ");
+            amount = scanner.nextInt();
+
+            if (amount < 0) {
+                System.out.println("You cannot borrow a negative amount of books");
+                return;
+            }
+
+            Books bookSelected = books.get(index);
+
+            if (bookSelected.getStocks() < amount) {
+                System.out.println("amount inputted Exceeded stock");
+                return;
+            }
+
+            bookSelected.setStocks(bookSelected.getStocks() - amount);
+
+        }catch(Exception e){
+            System.out.println("Invalid Input");
         }
-
-        viewBooks();
-
-        System.out.print("Enter Book: ");
-        choice=scanner.nextInt();
-
-        int index=choice-1;
-
-        if(index<0||index>=books.size()){
-            System.out.println("invalid input");
-            return;
-        }
-
-        System.out.print("Enter the amount you want to borrow: ");
-        amount=scanner.nextInt();
-
-        if(amount<0){
-            System.out.println("You cannot borrow a negative amount of books");
-            return;
-        }
-
-        Books bookSelected=books.get(index);
-
-        if(bookSelected.getStocks()<amount) {
-            System.out.println("amount inputted Exceeded stock");
-            return;
-        }
-
-        bookSelected.setStocks(bookSelected.getStocks()-amount);
-
     }
     static void returnBooks(){
-        int choice;
-        int amount;
-        if(books.isEmpty()){
-            System.out.println("No books available");
-            return;
+        try{
+            int choice;
+            int amount;
+            if (books.isEmpty()) {
+                System.out.println("No books available");
+                return;
+            }
+
+            viewBooks();
+            System.out.print("Enter Book: ");
+            choice = scanner.nextInt();
+
+            int index = choice - 1;
+
+            if (index < 0 || index >= books.size()) {
+                System.out.println("invalid input");
+                return;
+            }
+
+            System.out.print("Enter the amount you want to return: ");
+            amount = scanner.nextInt();
+
+            Books limit = books.get(index);
+
+            if (amount < 0) {
+                System.out.println("You cannot return a negative amount of books");
+                System.exit(0);
+            } else if ((amount + limit.getStocks()) > limit.getLimit()) {
+                System.out.println("Cannot exceed the original amount");
+                return;
+            }
+
+
+            Books bookSelected = books.get(index);
+
+            bookSelected.setStocks(bookSelected.getStocks() + amount);
+        }catch (Exception e){
+            System.out.println("Invalid input");
         }
-
-        viewBooks();
-        System.out.print("Enter Book: ");
-        choice=scanner.nextInt();
-
-        int index=choice-1;
-
-        if(index<0||index>=books.size()){
-            System.out.println("invalid input");
-            return;
-        }
-
-        System.out.print("Enter the amount you want to return: ");
-        amount=scanner.nextInt();
-
-        Books limit=books.get(index);
-
-        if (amount<0){
-            System.out.println("You cannot return a negative amount of books");
-            return;
-        }
-        else if((amount+limit.getStocks())>limit.getLimit()){
-            System.out.println("Cannot exceed the original amount");
-            return;
-        }
-
-
-        Books bookSelected=books.get(index);
-
-        bookSelected.setStocks(bookSelected.getStocks()+amount);
-
     }
     static void searchBooks(){
-        String search;
-        boolean found=false;
-        if (books.isEmpty()) {
-            System.out.println("No Books!");
-            return;
-        }
-
-        System.out.print("Enter book name to search: ");
-        search=scanner.nextLine();
-
-        for(Books book:books){
-            if(book.getName().equalsIgnoreCase(search)){
-                System.out.println("\n"+book);
-                found=true;
-                break;
+        try{
+            String search;
+            boolean found = false;
+            if (books.isEmpty()) {
+                System.out.println("No Books!");
+                return;
             }
+
+            System.out.print("Enter book name to search: ");
+            search = scanner.nextLine();
+
+            for (Books book : books) {
+                if (book.getName().equalsIgnoreCase(search)) {
+                    System.out.println("\n" + book);
+                    found = true;
+                    break;
+                }
+            }
+            if (!found)
+                System.out.println("No books Found");
+        }catch(Exception e){
+            System.out.println("Invalid Input");
         }
-        if(!found)
-            System.out.println("No books Found");
     }
     static void deleteBooks(){
-        int choice;
+        try{
+            int choice;
 
-        viewBooks();
+            viewBooks();
 
-        System.out.println("Enter book to remove");
-        choice=scanner.nextInt();
+            System.out.println("Enter book to remove");
+            choice = scanner.nextInt();
 
-        int index=choice-1;
+            int index = choice - 1;
 
-        if(index>=0&&index<books.size()){
+            if (index >= 0 && index < books.size()) {
 
-            Books removed = books.remove(index);
+                Books removed = books.remove(index);
 
-            System.out.println(removed.getName()+" has been removed");
-        }
-        else{
-            System.out.println("Invalid input");
+                System.out.println(removed.getName() + " has been removed");
+            } else {
+                System.out.println("Invalid input");
+            }
+        }catch(Exception e){
+            System.out.println("Invalid Input");
         }
     }
 
