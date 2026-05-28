@@ -66,5 +66,5 @@ public class GradesAverage {
 }
 
 // scanner
-// menu loop — same pattern as your LibraryOOP.java
+// menu loop — same pattern as your
 // handle IllegalStateException and IllegalArgumentException
